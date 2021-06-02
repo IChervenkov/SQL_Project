@@ -1,3 +1,1 @@
 # SQL_Project
-
-Про
