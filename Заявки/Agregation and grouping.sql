@@ -1,6 +1,6 @@
 USE Library
 
-/* Извежда информация за заглавието, автора, годината на написване на книгите чиито секций имат поне 1 взета книга */
+/* Displays information about the title, author, year of writing of books whose sections have at least 1 book taken */
 
 GO
 SELECT b.title AS 'title_of_book', b.author AS 'author_of_book', b.year_create AS 'year_of_writing'
@@ -10,7 +10,7 @@ JOIN
 GROUP BY id_section
 HAVING COUNT(id_section) > 1) bs ON bs.id_section = b.id_section;
 
-/* Извежда имената на читателитe които са взели повече от една книга */
+/* Displays the names of readers who have taken more than one book */
 
 GO
 SELECT r.name AS 'name_of_reader'
@@ -20,8 +20,8 @@ SELECT id_reader FROM Reader_book
 GROUP BY id_reader
 HAVING COUNT(id_reader) > 1) rb ON rb.id_reader = r.id
 
-/*  Извежда данните на читателя, чиито месеци на създаване и подновяване на картите е нечетно число с еднакви адреси 
-и телефоните им завършват на нечетна цифра */
+/*  Displays the data of the reader whose card creation and renewal months is an odd number with identical addresses 
+and their phone numbers end in an odd number */
 
 GO
 SELECT r.name AS 'name_of_reader', r.egn AS 'egn', r.address AS 'address', r.phone AS 'phone'
@@ -34,10 +34,10 @@ HAVING COUNT(1) > 1) r1 ON r1.address = r.address
 JOIN Reader_card rc ON rc.code = r.code_card
 WHERE RIGHT(r.phone,1) % 2 <> 0 AND MONTH(rc.date_create) % 2 <> 0 AND MONTH(rc.date_renewal) % 2 <> 0;
 
-/* Извежда имената на читателите, които са взели поне една книга, ЕГН-то им, адреса им и датата на последното подновяване на картата им 
-и информация за книгата която са взели, 
-като извежда само тези които дължината на автора е по-голяма от последните 2 цифри на най-малката година на създаване на профила на читателя,
-също така само информацията за книгите и читателите от секция с повече от 1 взета книга */
+/* Displays the names of readers who have checked out at least one book, their PIN, their address, and the date their card was last renewed 
+and information about the book they checked out, 
+and displays only those whose author length is greater than the last 2 digits of the least significant year of the reader's profile,
+also only information about books and readers from a section with more than 1 book checked out */
 
 GO
 SELECT DISTINCT r.name AS 'name_of_reader', r.egn AS 'egn', r.address AS 'reader_address', rc.date_renewal AS 'date_of_create_profile', 
@@ -55,7 +55,7 @@ HAVING COUNT(id_section) > 1) b1 ON b1.id_section = b.id_section
 GROUP BY b.author, r.name, r.egn, r.address, rc.date_renewal, b.title, b.year_create,s.name 
 HAVING LEN(b.author) > (SELECT RIGHT(MIN(YEAR(date_renewal)),2) FROM Reader_card);
 
-/* Извежда броя на секциите които имат поне 1 налична книга и годината на написване на книга от тази секция да са от 20 век */
+/* Displays the number of sections that have at least 1 book available and the year a book from that section was written to be from the 20th century */
 
 GO
 SELECT COUNT(s.name) AS 'count_of_section'
@@ -63,9 +63,9 @@ FROM Book b
 JOIN Section s ON s.id= b.id_section
 WHERE s.count_availabal_book >= 1 AND LEFT(b.year_create,2) = 19;
 
-/* Извежда информация за читателя и читателската му карта 
-като извежда единствено тези на които годината на създаване на профила е между най-малката година на подновяване и най-голямата на създаване на читателската карта
-и читателите с еднакви адреси */
+/* Displays information about the reader and their reader card 
+by displaying only those whose profile creation year is between the smallest renewal year and the largest creation year of the reader card
+and readers with the same addresses */
 
 GO
 SELECT r.name AS 'name_of_reader', r.address AS 'address_of_reader', r.egn AS 'egn', r.phone AS 'reader_phone', r.record_data AS 'date_of_create_acount', 
@@ -85,7 +85,7 @@ GROUP BY address
 HAVING COUNT(1) > 1
 ) r1 ON r1.address = r.address;
 
-/* Извежда имената на авторите на книгите написани през една и съща година и не са налични*/
+/* Lists the names of authors of books written in the same year and not available */
 
 GO
 SELECT b.author AS 'author_of_book' 
@@ -97,7 +97,7 @@ GROUP BY year_create
 HAVING COUNT(1)>1) b1 ON b.year_create = b1.year_create
 WHERE b.available = 'N';
 
-/* Извежда броя на читателите взели по 1 книга от секция Business */
+/* Displays the number of readers who took 1 book from the Business section */
 
 GO
 SELECT COUNT(r.name) AS 'name_of_reader'
@@ -107,14 +107,14 @@ JOIN Book b ON b.code = rb.code_book
 JOIN Section s ON b.id_section = s.id
 WHERE r.count_get_book = 1 AND s.name = 'Business';
 
-/* Извежда колко е общият брой на всички книги в библиотеката */
+/* Displays the total number of all books in the library */
 
 GO
 SELECT COUNT(*) AS 'all_book_in_the_library'
 FROM Book;
 
-/* Извежда информация за читателите и взетите книгите на които секциите се повтарят,
-годините на написване на книгите да надвишават средната им годишка стоинос и сортира по името на читателя възходящо*/
+/* Displays information about the readers and taken books on which the sections are repeated,
+the years the books were written to exceed their average yearly cost, and sorts by reader name in ascending order */
 
 GO
 SELECT r.name AS 'name_of_reader', r.address AS 'address_of_reader', r.egn AS 'egn', r.phone AS 'phone', r.record_data AS 'date_of_create_profile',

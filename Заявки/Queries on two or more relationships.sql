@@ -1,6 +1,6 @@
 USE Library
 
-/* Извежда заглавието на книгите които Emilia Yancheva е взела */
+/* Displays the title of the books that Emilia Yancheva has taken */
 
 GO
 SELECT b.title AS 'title_of_book' 
@@ -9,7 +9,7 @@ JOIN Reader_book rb ON b.code = rb.code_book
 JOIN Reader r ON rb.id_reader = r.id
 WHERE r.name = 'Emilia Yancheva';
 
-/* Извежда имената на читателите които са взели книги само от секция Fantasy */
+/* Displays the names of readers who have taken books only from the Fantasy section */
 
 GO
 SELECT r.name AS 'name_of_reader' 
@@ -19,7 +19,7 @@ JOIN Book b ON rb.code_book = b.code
 JOIN Section s ON b.id_section = s.id
 WHERE s.name = 'Fantasy';
 
-/* Извежда имената на читателите и дата на създаване на читателската им картата който са подновени преди днешната дата */
+/* Displays the names of the readers and the creation date of their reader card that were renewed before today's date */
 
 GO
 SELECT r.name AS 'name_of_reader', FORMAT(rc.date_create,N'dd.MM.yyyy') AS 'Date_of_create_profile'
@@ -27,7 +27,7 @@ FROM Reader r
 JOIN Reader_card rc ON r.code_card = rc.code
 WHERE rc.date_renewal < GETDATE();
 
-/* Извежда имената на читателите които са взели книги с автори Robert Kiyosaki и Napoleon Hill */
+/* Lists the names of readers who have picked up books by Robert Kiyosaki and Napoleon Hill */
 
 GO
 SELECT r.name AS 'name_of_reader'

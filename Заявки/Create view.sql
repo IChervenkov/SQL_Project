@@ -1,6 +1,6 @@
 USE Library
 
-/* Изглед който включва името на читателите които са взели книга, заглавията на съответните книги */
+/* A view that includes the name of the readers who have taken a book, the titles of the respective books */
 
 GO
 CREATE VIEW readerbook_book
@@ -10,7 +10,7 @@ FROM Reader r
 JOIN Reader_book rb ON r.id = rb.id_reader
 JOIN Book b ON rb.code_book = b.code;
 
-/* Изглед който включва имената на читателите, които са взели поне една книга, ЕГН-то им, адреса им и датата на последното подновяване на картата им */
+/* A view that includes the names of readers who have checked out at least one book, their PIN, their address, and the date their card was last renewed */
 
 GO
 CREATE VIEW reader_readercard_readerbook
@@ -20,7 +20,7 @@ FROM Reader r
 JOIN Reader_book rb ON rb.id_reader = r.id
 JOIN reader_card rc ON rc.code = r.code_card;
 
-/* Изглед за данните на читателя, чиито месеци на създаване и подновяване на картите е нечетно число */
+/* Data view of the reader whose card creation and renewal months is an odd number */
 
 GO
 CREATE VIEW reader_readercard
@@ -30,7 +30,7 @@ FROM Reader r
 JOIN Reader_card rc ON rc.code = r.code_card
 WHERE MONTH(rc.date_create) % 2 <> 0 AND MONTH(rc.date_renewal) % 2 <> 0;
 
-/* Изглед за данните на книгите чиито секций имат поне 1 взета книга и в името си съдържат 'е' */
+/* View data of books whose sections have at least 1 book taken and contain 'e' in their name */
 
 GO
 CREATE VIEW book_section
